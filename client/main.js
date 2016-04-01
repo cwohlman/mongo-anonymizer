@@ -1,22 +1,33 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
+Template.anonymize.onCreated(function() {
+  const instance = this;
+
+  instance.result = new ReactiveVar();
 });
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
+Template.anonymize.helpers({
+  message: function () {
+    const result = Template.instance().result.get();
+
+    return result && result + '';
+  }
+});
+
+Template.anonymize.events({
+  'click [data-action="anonymize"]'(event, instance) {
+    Meteor.call('anonymize', (error, result) => {
+      instance.result.set(error || result);
+    });
   },
 });
 
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
+Template.users.helpers({
+  users: function () {
+    return Meteor.users.find();
+  }
 });

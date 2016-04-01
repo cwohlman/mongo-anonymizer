@@ -3,23 +3,24 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <h1>The Anonymizer</h1>
 
-  {{> hello}}
-  {{> info}}
+  {{> anonymize}}
+
+  {{> users}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="anonymize">
+  <button data-action="anonymize">Anonymize The Database</button>
+  <pre>{{message}}</pre>
 </template>
 
-<template name="info">
-  <h2>Learn Meteor!</h2>
+<template name="users">
   <ul>
-    <li><a href="https://www.meteor.com/try">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com">Discussions</a></li>
+    {{#each users}}
+      <li>
+        {{profile.name}} - {{#each emails}} {{address}} {{/each}}
+      </li>
+    {{/each}}    
   </ul>
 </template>
